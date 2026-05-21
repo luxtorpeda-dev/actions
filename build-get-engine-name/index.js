@@ -1,13 +1,13 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
-const core = require('@actions/core');
-const githubReq = require('@actions/github');
+import * as core from '@actions/core';
+import { context } from '@actions/github';
+import { Octokit } from "octokit";
 
 async function run() {
     try {
-        const context = githubReq.context;
-        const github = githubReq.getOctokit(core.getInput('token'));
+        const github = new Octokit({ auth: core.getInput('github_token') });
 
         const isPullRequest = !!context.payload.pull_request;
         const repoInfo = isPullRequest
