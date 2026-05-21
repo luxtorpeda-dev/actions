@@ -36077,18 +36077,20 @@ async function run() {
         const newFile = getInput('newFile');
         const updateDownloads = getInput('updateDownloads') === 'true';
 
-        const envJsonPath = update_engine_version_path.join(packagesEnginesPath, engineName, 'env.json');
+        if(!updateDownloads) {
+            const envJsonPath = update_engine_version_path.join(packagesEnginesPath, engineName, 'env.json');
 
-        const envJsonStr = await update_engine_version_fs.readFile(envJsonPath, 'utf-8');
-        const envData = JSON.parse(envJsonStr);
+            const envJsonStr = await update_engine_version_fs.readFile(envJsonPath, 'utf-8');
+            const envData = JSON.parse(envJsonStr);
 
-        if(newTag) {
-            envData.COMMIT_TAG = newTag;
-        } else if(newHash) {
-            envData.COMMIT_HASH = newHash;
+            if(newTag) {
+                envData.COMMIT_TAG = newTag;
+            } else if(newHash) {
+                envData.COMMIT_HASH = newHash;
+            }
+
+            await update_engine_version_fs.writeFile(envJsonPath, JSON.stringify(envData, null, 4));
         }
-
-        await update_engine_version_fs.writeFile(envJsonPath, JSON.stringify(envData, null, 4));
 
         const packagesJsonPath = update_engine_version_path.join('metadata', 'packagessniper_v2.json');
         const packagesJsonStr = await update_engine_version_fs.readFile(packagesJsonPath, 'utf-8');
