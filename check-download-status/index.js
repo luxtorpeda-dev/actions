@@ -119,6 +119,11 @@ async function checkDownloadArray(downloadArray, game, issuesFound) {
                             const latestTag = latestRelease.tag_name;
                             // Only record an issue if the latest tag is different and the latest tag does not include "-rc"
                             if (latestTag !== releaseTag && !latestTag.includes('-rc')) {
+                                const asset = latestRelease.assets.find(asset =>
+                                    asset.name.replaceAll(latestTag, releaseTag) === download.file ||
+                                    asset.name.includes(latestTag)
+                                );
+
                                 issuesFound.push({
                                     download_name: download.name,
                                     game_name: game.game_name,
@@ -126,7 +131,14 @@ async function checkDownloadArray(downloadArray, game, issuesFound) {
                                     type: "new_release",
                                     new_version: latestTag,
                                     current_release: releaseTag,
-                                    current_url: currentUrl
+                                    current_url: currentUrl,
+                                    engineName: game.internal_engine_name || download.engine_name || download.name,
+                                    newTag: latestTag,
+                                    oldTag: releaseTag,
+                                    oldFile: download.file,
+                                    newFile: asset?.name,
+                                    githubOwner: owner,
+                                    githubRepo: repo
                                 });
                             }
                         }

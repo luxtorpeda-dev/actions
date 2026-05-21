@@ -20,6 +20,16 @@ inputs:
   oldHash:
     description: Old hash string
     required: false
+  updateDownloads:
+    description: Update download urls and files
+    required: false
+    default: 'false'
+  oldFile:
+    description: Old download file
+    required: false
+  newFile:
+    description: New download file
+    required: false
 outputs:
   matrix:
     description: Matrix

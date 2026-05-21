@@ -11,11 +11,30 @@ const packagesEnginesPath = 'engines';
 
 console.log('Starting.');
 
+function updateDownload(download, oldTag, newTag, oldFile, newFile) {
+    if(download.url && oldTag && newTag) {
+        download.url = download.url.replace(oldTag, newTag);
+    }
+
+    if(download.file) {
+        if(oldFile && newFile && download.file === oldFile) {
+            download.file = newFile;
+        } else if(oldTag && newTag) {
+            download.file = download.file.replace(oldTag, newTag);
+        }
+    }
+}
+
 async function run() {
     try {
         const engineName = core.getInput('engineName');
         const newTag = core.getInput('newTag');
         const newHash = core.getInput('newHash');
+        const oldTag = core.getInput('oldTag');
+        const oldFile = core.getInput('oldFile');
+        const newFile = core.getInput('newFile');
+        const updateDownloads = core.getInput('updateDownloads') === 'true';
+
         const envJsonPath = path.join(packagesEnginesPath, engineName, 'env.json');
 
         const envJsonStr = await fs.readFile(envJsonPath, 'utf-8');
@@ -41,6 +60,22 @@ async function run() {
                     engineData.version = newHash;
                 }
 
+            }
+        }
+
+        if(updateDownloads) {
+            for(let gameData of packagesJson.games) {
+                if(gameData.download) {
+                    for(let download of gameData.download) {
+                        updateDownload(download, oldTag, newTag, oldFile, newFile);
+                    }
+                }
+            }
+
+            if(packagesJson.default_engine && packagesJson.default_engine.download) {
+                for(let download of packagesJson.default_engine.download) {
+                    updateDownload(download, oldTag, newTag, oldFile, newFile);
+                }
             }
         }
 
