@@ -3,7 +3,7 @@ description: 'Update engine based on inputs'
 author: 'd10sfan'
 runs:
     using: 'node24'
-    main: 'index.js'
+    main: 'dist/index.js'
 inputs:
   engineName:
     description: Name of engine

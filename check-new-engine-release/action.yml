@@ -3,7 +3,7 @@ description: 'Checks engines for new releases'
 author: 'd10sfan'
 runs:
     using: 'node24'
-    main: 'index.js'
+    main: 'dist/index.js'
 inputs:
   github_token:
     description: "GitHub Personal Access Token (PAT) to increase API limits."
