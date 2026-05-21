@@ -54,7 +54,10 @@ jobs:
         run: |
           set -euo pipefail
 
-          git add .
+          git add -A .
+
+          echo "Git status:"
+          git status --short
 
           if git diff --quiet; then
             echo "No dist changes to commit."
