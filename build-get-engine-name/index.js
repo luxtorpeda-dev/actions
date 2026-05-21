@@ -1,3 +1,6 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 const core = require('@actions/core');
 const githubReq = require('@actions/github');
 
