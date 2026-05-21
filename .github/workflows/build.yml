@@ -59,7 +59,7 @@ jobs:
           echo "Git status:"
           git status --short
 
-          if git diff --quiet; then
+          if git diff --cached --quiet; then
             echo "No dist changes to commit."
             exit 0
           fi
