@@ -60,16 +60,15 @@ jobs:
           set -euo pipefail
 
           action_dir="${{ matrix.action-dir }}"
-          entry="$action_dir/src/index.js"
+          entry="$action_dir/index.js"
 
           echo "Processing action: $action_dir"
+          echo "Entry file: $entry"
 
           if [ ! -f "$entry" ]; then
             echo "ERROR: Missing entry file: $entry"
             exit 1
           fi
-
-          rm -rf "$action_dir/dist"
 
           echo "Compiling $entry"
           npx ncc build "$entry" -o "$action_dir/dist"
