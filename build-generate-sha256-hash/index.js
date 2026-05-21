@@ -1,9 +1,6 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
 import * as core from '@actions/core';
-const crypto = require('crypto');
-const fs = require('fs');
+import crypto from 'node:crypto';
+import fs from 'node:fs';
 
 try {
     const filePath = core.getInput('file');

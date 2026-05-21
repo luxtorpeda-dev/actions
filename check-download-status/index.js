@@ -1,9 +1,6 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
 import * as core from '@actions/core';
-const fs = require('fs').promises;
-const path = require('path');
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 console.log('Starting.');
 
