@@ -35,18 +35,20 @@ async function run() {
         const newFile = core.getInput('newFile');
         const updateDownloads = core.getInput('updateDownloads') === 'true';
 
-        const envJsonPath = path.join(packagesEnginesPath, engineName, 'env.json');
+        if(!updateDownloads) {
+            const envJsonPath = path.join(packagesEnginesPath, engineName, 'env.json');
 
-        const envJsonStr = await fs.readFile(envJsonPath, 'utf-8');
-        const envData = JSON.parse(envJsonStr);
+            const envJsonStr = await fs.readFile(envJsonPath, 'utf-8');
+            const envData = JSON.parse(envJsonStr);
 
-        if(newTag) {
-            envData.COMMIT_TAG = newTag;
-        } else if(newHash) {
-            envData.COMMIT_HASH = newHash;
+            if(newTag) {
+                envData.COMMIT_TAG = newTag;
+            } else if(newHash) {
+                envData.COMMIT_HASH = newHash;
+            }
+
+            await fs.writeFile(envJsonPath, JSON.stringify(envData, null, 4));
         }
-
-        await fs.writeFile(envJsonPath, JSON.stringify(envData, null, 4));
 
         const packagesJsonPath = path.join('metadata', 'packagessniper_v2.json');
         const packagesJsonStr = await fs.readFile(packagesJsonPath, 'utf-8');
