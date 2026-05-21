@@ -27976,8 +27976,6 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("util");
 /************************************************************************/
 var __webpack_exports__ = {};
 
-;// CONCATENATED MODULE: external "module"
-const external_module_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("module");
 ;// CONCATENATED MODULE: external "os"
 const external_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("os");
 ;// CONCATENATED MODULE: ./node_modules/@actions/core/lib/utils.js
@@ -30923,13 +30921,14 @@ function getIDToken(aud) {
  */
 
 //# sourceMappingURL=core.js.map
+;// CONCATENATED MODULE: external "node:fs/promises"
+const promises_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs/promises");
+;// CONCATENATED MODULE: external "node:path"
+const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
 ;// CONCATENATED MODULE: ./check-download-status/index.js
 
-const check_download_status_require = (0,external_module_namespaceObject.createRequire)(import.meta.url);
 
 
-const check_download_status_fs = check_download_status_require('fs').promises;
-const check_download_status_path = check_download_status_require('path');
 
 console.log('Starting.');
 
@@ -31078,8 +31077,8 @@ async function checkDownloadArray(downloadArray, game, issuesFound) {
 
 async function run() {
     try {
-        const packagesJsonPath = check_download_status_path.join('metadata', 'packagessniper_v2.json');
-        const packagesJsonStr = await check_download_status_fs.readFile(packagesJsonPath, 'utf-8');
+        const packagesJsonPath = external_node_path_namespaceObject.join('metadata', 'packagessniper_v2.json');
+        const packagesJsonStr = await promises_namespaceObject.readFile(packagesJsonPath, 'utf-8');
         const packagesJson = JSON.parse(packagesJsonStr);
 
         const issuesFound = [];

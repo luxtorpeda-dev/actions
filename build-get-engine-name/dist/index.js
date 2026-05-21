@@ -30524,8 +30524,6 @@ __webpack_unused_export__ = defaultContentType
 /************************************************************************/
 var __webpack_exports__ = {};
 
-;// CONCATENATED MODULE: external "module"
-const external_module_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("module");
 ;// CONCATENATED MODULE: external "os"
 const external_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("os");
 ;// CONCATENATED MODULE: ./node_modules/@actions/core/lib/utils.js
@@ -42564,9 +42562,6 @@ var dist_bundle_OAuthApp = OAuthApp.defaults({ Octokit });
 /* v8 ignore next no need to test internals of the throttle plugin -- @preserve */
 
 ;// CONCATENATED MODULE: ./build-get-engine-name/index.js
-
-const build_get_engine_name_require = (0,external_module_namespaceObject.createRequire)(import.meta.url);
-
 
 
 

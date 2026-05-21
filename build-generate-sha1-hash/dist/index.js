@@ -27976,8 +27976,6 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("util");
 /************************************************************************/
 var __webpack_exports__ = {};
 
-;// CONCATENATED MODULE: external "module"
-const external_module_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("module");
 ;// CONCATENATED MODULE: external "os"
 const external_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("os");
 ;// CONCATENATED MODULE: ./node_modules/@actions/core/lib/utils.js
@@ -30923,18 +30921,19 @@ function getIDToken(aud) {
  */
 
 //# sourceMappingURL=core.js.map
+// EXTERNAL MODULE: external "node:crypto"
+var external_node_crypto_ = __nccwpck_require__(7598);
+;// CONCATENATED MODULE: external "node:fs"
+const external_node_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs");
 ;// CONCATENATED MODULE: ./build-generate-sha1-hash/index.js
 
-const build_generate_sha1_hash_require = (0,external_module_namespaceObject.createRequire)(import.meta.url);
 
 
-const build_generate_sha1_hash_crypto = build_generate_sha1_hash_require('crypto');
-const build_generate_sha1_hash_fs = build_generate_sha1_hash_require('fs');
 
 try {
     const filePath = getInput('file');
-    const shasum = build_generate_sha1_hash_crypto.createHash('sha1');
-    const fileStr = build_generate_sha1_hash_fs.readFileSync(filePath, 'utf8');
+    const shasum = external_node_crypto_.createHash('sha1');
+    const fileStr = external_node_fs_namespaceObject.readFileSync(filePath, 'utf8');
     shasum.update(fileStr);
     const hash = shasum.digest('hex');
     setOutput("hash", hash);

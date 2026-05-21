@@ -27976,8 +27976,6 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("util");
 /************************************************************************/
 var __webpack_exports__ = {};
 
-;// CONCATENATED MODULE: external "module"
-const external_module_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("module");
 ;// CONCATENATED MODULE: external "os"
 const external_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("os");
 ;// CONCATENATED MODULE: ./node_modules/@actions/core/lib/utils.js
@@ -30923,13 +30921,14 @@ function getIDToken(aud) {
  */
 
 //# sourceMappingURL=core.js.map
+;// CONCATENATED MODULE: external "node:fs/promises"
+const promises_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs/promises");
+;// CONCATENATED MODULE: external "node:path"
+const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
 ;// CONCATENATED MODULE: ./build-generate-file-matrix/index.js
 
-const build_generate_file_matrix_require = (0,external_module_namespaceObject.createRequire)(import.meta.url);
 
 
-const build_generate_file_matrix_fs = build_generate_file_matrix_require('fs').promises;
-const build_generate_file_matrix_path = build_generate_file_matrix_require('path');
 
 console.log('Starting.');
 
@@ -30938,7 +30937,7 @@ async function run() {
         const folderName = getInput('name');
         const extension = '.tar.xz';
 
-        const files = await build_generate_file_matrix_fs.readdir(folderName);
+        const files = await promises_namespaceObject.readdir(folderName);
         console.log(files);
         const matrix = {
             include: []
@@ -30946,8 +30945,8 @@ async function run() {
         
         for(let i = 0; i < files.length; i++) {
             matrix.include.push({
-                name: build_generate_file_matrix_path.basename(files[i], extension),
-                fileName: build_generate_file_matrix_path.join(folderName, files[i]),
+                name: external_node_path_namespaceObject.basename(files[i], extension),
+                fileName: external_node_path_namespaceObject.join(folderName, files[i]),
                 extension:  extension
             });
         }

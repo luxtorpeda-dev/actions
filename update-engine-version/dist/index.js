@@ -28994,8 +28994,6 @@ __webpack_unused_export__ = defaultContentType
 /************************************************************************/
 var __webpack_exports__ = {};
 
-;// CONCATENATED MODULE: external "module"
-const external_module_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("module");
 ;// CONCATENATED MODULE: external "os"
 const external_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("os");
 ;// CONCATENATED MODULE: ./node_modules/@actions/core/lib/utils.js
@@ -36039,14 +36037,15 @@ function getOctokit(token, options, ...additionalPlugins) {
     return new GitHubWithPlugins(getOctokitOptions(token, options));
 }
 //# sourceMappingURL=github.js.map
+;// CONCATENATED MODULE: external "node:fs/promises"
+const promises_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs/promises");
+;// CONCATENATED MODULE: external "node:path"
+const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
 ;// CONCATENATED MODULE: ./update-engine-version/index.js
 
-const update_engine_version_require = (0,external_module_namespaceObject.createRequire)(import.meta.url);
 
 
 
-const update_engine_version_fs = update_engine_version_require('fs').promises;
-const update_engine_version_path = update_engine_version_require('path');
 
 
 const packagesEnginesPath = 'engines';
@@ -36078,9 +36077,9 @@ async function run() {
         const updateDownloads = getInput('updateDownloads') === 'true';
 
         if(!updateDownloads) {
-            const envJsonPath = update_engine_version_path.join(packagesEnginesPath, engineName, 'env.json');
+            const envJsonPath = external_node_path_namespaceObject.join(packagesEnginesPath, engineName, 'env.json');
 
-            const envJsonStr = await update_engine_version_fs.readFile(envJsonPath, 'utf-8');
+            const envJsonStr = await promises_namespaceObject.readFile(envJsonPath, 'utf-8');
             const envData = JSON.parse(envJsonStr);
 
             if(newTag) {
@@ -36089,11 +36088,11 @@ async function run() {
                 envData.COMMIT_HASH = newHash;
             }
 
-            await update_engine_version_fs.writeFile(envJsonPath, JSON.stringify(envData, null, 4));
+            await promises_namespaceObject.writeFile(envJsonPath, JSON.stringify(envData, null, 4));
         }
 
-        const packagesJsonPath = update_engine_version_path.join('metadata', 'packagessniper_v2.json');
-        const packagesJsonStr = await update_engine_version_fs.readFile(packagesJsonPath, 'utf-8');
+        const packagesJsonPath = external_node_path_namespaceObject.join('metadata', 'packagessniper_v2.json');
+        const packagesJsonStr = await promises_namespaceObject.readFile(packagesJsonPath, 'utf-8');
         const packagesJson = JSON.parse(packagesJsonStr);
 
         for(let engineData of packagesJson.engines) {
@@ -36123,7 +36122,7 @@ async function run() {
             }
         }
 
-        await update_engine_version_fs.writeFile(packagesJsonPath, JSON.stringify(packagesJson, null, 4));
+        await promises_namespaceObject.writeFile(packagesJsonPath, JSON.stringify(packagesJson, null, 4));
     }
     catch (error) {
         setFailed(error.message);

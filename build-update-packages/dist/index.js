@@ -27976,8 +27976,6 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("util");
 /************************************************************************/
 var __webpack_exports__ = {};
 
-;// CONCATENATED MODULE: external "module"
-const external_module_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("module");
 ;// CONCATENATED MODULE: external "os"
 const external_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("os");
 ;// CONCATENATED MODULE: ./node_modules/@actions/core/lib/utils.js
@@ -30923,13 +30921,14 @@ function getIDToken(aud) {
  */
 
 //# sourceMappingURL=core.js.map
+;// CONCATENATED MODULE: external "node:fs/promises"
+const promises_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs/promises");
+;// CONCATENATED MODULE: external "node:path"
+const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
 ;// CONCATENATED MODULE: ./build-update-packages/index.js
 
-const build_update_packages_require = (0,external_module_namespaceObject.createRequire)(import.meta.url);
 
 
-const build_update_packages_fs = build_update_packages_require('fs').promises;
-const build_update_packages_path = build_update_packages_require('path');
 
 const packagesFileName = "metadata/packagessniper_v2.json";
 
@@ -30937,7 +30936,7 @@ console.log('Starting.');
 
 async function run() {
     try {
-        const fileStr = await build_update_packages_fs.readFile(packagesFileName, 'utf-8');
+        const fileStr = await promises_namespaceObject.readFile(packagesFileName, 'utf-8');
         const packages = JSON.parse(fileStr);
         
         const files = JSON.parse(getInput('matrix')).include;
@@ -31074,7 +31073,7 @@ async function run() {
         }
         
         const finalPackagesStr = JSON.stringify(packages, null, 4);
-        await build_update_packages_fs.writeFile(packagesFileName, finalPackagesStr);
+        await promises_namespaceObject.writeFile(packagesFileName, finalPackagesStr);
     }
     catch (error) {
         setFailed(error.message);

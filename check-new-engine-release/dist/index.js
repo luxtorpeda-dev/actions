@@ -35441,8 +35441,6 @@ __nccwpck_require__.d(common_utils_namespaceObject, {
   origin: () => (origin)
 });
 
-;// CONCATENATED MODULE: external "module"
-const external_module_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("module");
 ;// CONCATENATED MODULE: external "os"
 const external_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("os");
 ;// CONCATENATED MODULE: ./node_modules/@actions/core/lib/utils.js
@@ -42486,6 +42484,10 @@ function getOctokit(token, options, ...additionalPlugins) {
     return new GitHubWithPlugins(getOctokitOptions(token, options));
 }
 //# sourceMappingURL=github.js.map
+;// CONCATENATED MODULE: external "node:fs/promises"
+const promises_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs/promises");
+;// CONCATENATED MODULE: external "node:path"
+const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
 ;// CONCATENATED MODULE: ./node_modules/axios/lib/helpers/bind.js
 
 
@@ -54551,25 +54553,24 @@ var dist_bundle_OAuthApp = OAuthApp.defaults({ Octokit });
 
 /* v8 ignore next no need to test internals of the throttle plugin -- @preserve */
 
+;// CONCATENATED MODULE: external "node:child_process"
+const external_node_child_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:child_process");
 ;// CONCATENATED MODULE: ./check-new-engine-release/index.js
 
-const check_new_engine_release_require = (0,external_module_namespaceObject.createRequire)(import.meta.url);
 
 
 
-const check_new_engine_release_fs = check_new_engine_release_require('fs').promises;
-const check_new_engine_release_path = check_new_engine_release_require('path');
 
 
-const { execSync } = check_new_engine_release_require('child_process');
+
 
 const packagesEnginesPath = 'engines';
 
 console.log('Starting.');
 
 async function getGitOrgRepo(enginePath) {
-    const buildFilePath = check_new_engine_release_path.join(enginePath, 'build.sh');
-    const buildFileStr = await check_new_engine_release_fs.readFile(buildFilePath, 'utf-8');
+    const buildFilePath = external_node_path_namespaceObject.join(enginePath, 'build.sh');
+    const buildFileStr = await promises_namespaceObject.readFile(buildFilePath, 'utf-8');
     const buildFileArr = buildFileStr.split('\n');
 
     let sourcePushdFound = false;
@@ -54625,16 +54626,16 @@ async function getGitOrgRepo(enginePath) {
 }
 
 async function checkEngine(engineName, issuesFound) {
-    const engineFolderPath = check_new_engine_release_path.join(packagesEnginesPath, engineName);
-    const envJsonPath = check_new_engine_release_path.join(engineFolderPath, 'env.json');
+    const engineFolderPath = external_node_path_namespaceObject.join(packagesEnginesPath, engineName);
+    const envJsonPath = external_node_path_namespaceObject.join(engineFolderPath, 'env.json');
 
     try {
-        await check_new_engine_release_fs.access(envJsonPath);
+        await promises_namespaceObject.access(envJsonPath);
     } catch {
         return;
     }
 
-    const envJsonStr = await check_new_engine_release_fs.readFile(envJsonPath, 'utf-8');
+    const envJsonStr = await promises_namespaceObject.readFile(envJsonPath, 'utf-8');
     const envData = JSON.parse(envJsonStr);
     const commitMode = getInput('commit_mode');
 
@@ -54802,7 +54803,7 @@ async function checkSourceForgeTags(gitOrg, gitRepo, currentTag, issuesFound, en
         const repoUrl = `https://git.code.sf.net/p/${gitOrg}/${gitRepo}`;
 
         // Get the latest tag
-        const latestTag = execSync(`git ls-remote --tags ${repoUrl} | awk -F'/' '{print $NF}' | sort -V | tail -n 1`).toString().trim();
+        const latestTag = (0,external_node_child_process_namespaceObject.execSync)(`git ls-remote --tags ${repoUrl} | awk -F'/' '{print $NF}' | sort -V | tail -n 1`).toString().trim();
 
         if (latestTag && isValidTag(latestTag, currentTag)) {
             issuesFound.push({ engineName, newTag: latestTag, oldTag: currentTag });
@@ -54819,27 +54820,27 @@ async function checkSourceForgeCommits(gitOrg, gitRepo, currentHash, issuesFound
         const repoUrl = `https://git.code.sf.net/p/${gitOrg}/${gitRepo}`;
 
         // Clone the repo into a temp directory (shallow clone for speed)
-        execSync(`git clone --depth=50 ${repoUrl} temp_repo`, { stdio: 'ignore' });
+        (0,external_node_child_process_namespaceObject.execSync)(`git clone --depth=50 ${repoUrl} temp_repo`, { stdio: 'ignore' });
 
         // Get the latest commit hash and date
-        const latestCommit = execSync(`git -C temp_repo log -1 --format="%H %cI"`).toString().trim();
+        const latestCommit = (0,external_node_child_process_namespaceObject.execSync)(`git -C temp_repo log -1 --format="%H %cI"`).toString().trim();
         const [latestFullHash, latestDate] = latestCommit.split(' ');
 
         // Find the full hash for the given `currentHash` (which might be shortened)
         let currentFullHash;
         try {
-            currentFullHash = execSync(`git -C temp_repo rev-parse ${currentHash}`).toString().trim();
+            currentFullHash = (0,external_node_child_process_namespaceObject.execSync)(`git -C temp_repo rev-parse ${currentHash}`).toString().trim();
         } catch {
             console.error(`Error: The commit hash '${currentHash}' does not exist in the repository.`);
-            execSync(`rm -rf temp_repo`); // Clean up
+            (0,external_node_child_process_namespaceObject.execSync)(`rm -rf temp_repo`); // Clean up
             return;
         }
 
         // Get the commit date for the current full hash
-        const currentCommitDate = execSync(`git -C temp_repo log -1 --format="%cI" ${currentFullHash}`).toString().trim();
+        const currentCommitDate = (0,external_node_child_process_namespaceObject.execSync)(`git -C temp_repo log -1 --format="%cI" ${currentFullHash}`).toString().trim();
 
         // Remove the cloned repo after checking
-        execSync(`rm -rf temp_repo`);
+        (0,external_node_child_process_namespaceObject.execSync)(`rm -rf temp_repo`);
 
         if (latestFullHash && isNewerCommit(currentFullHash, latestFullHash, latestDate, currentCommitDate)) {
             issuesFound.push({ engineName, newHash: latestFullHash.substring(0, 7), oldHash: currentHash });
@@ -54856,27 +54857,27 @@ async function checkSourcehutCommits(gitOrg, gitRepo, currentHash, issuesFound, 
         const repoUrl = `https://git.sr.ht/${gitOrg}/${gitRepo}`;
 
         // Clone the repo into a temp directory (shallow clone for speed)
-        execSync(`git clone --depth=50 ${repoUrl} temp_repo`, { stdio: 'ignore' });
+        (0,external_node_child_process_namespaceObject.execSync)(`git clone --depth=50 ${repoUrl} temp_repo`, { stdio: 'ignore' });
 
         // Get the latest commit hash and date
-        const latestCommit = execSync(`git -C temp_repo log -1 --format="%H %cI"`).toString().trim();
+        const latestCommit = (0,external_node_child_process_namespaceObject.execSync)(`git -C temp_repo log -1 --format="%H %cI"`).toString().trim();
         const [latestFullHash, latestDate] = latestCommit.split(' ');
 
         // Find the full hash for the given `currentHash` (which might be shortened)
         let currentFullHash;
         try {
-            currentFullHash = execSync(`git -C temp_repo rev-parse ${currentHash}`).toString().trim();
+            currentFullHash = (0,external_node_child_process_namespaceObject.execSync)(`git -C temp_repo rev-parse ${currentHash}`).toString().trim();
         } catch {
             console.error(`Error: The commit hash '${currentHash}' does not exist in the repository.`);
-            execSync(`rm -rf temp_repo`); // Clean up
+            (0,external_node_child_process_namespaceObject.execSync)(`rm -rf temp_repo`); // Clean up
             return;
         }
 
         // Get the commit date for the current full hash
-        const currentCommitDate = execSync(`git -C temp_repo log -1 --format="%cI" ${currentFullHash}`).toString().trim();
+        const currentCommitDate = (0,external_node_child_process_namespaceObject.execSync)(`git -C temp_repo log -1 --format="%cI" ${currentFullHash}`).toString().trim();
 
         // Remove the cloned repo after checking
-        execSync(`rm -rf temp_repo`);
+        (0,external_node_child_process_namespaceObject.execSync)(`rm -rf temp_repo`);
 
         if (latestFullHash && isNewerCommit(currentFullHash, latestFullHash, latestDate, currentCommitDate)) {
             issuesFound.push({ engineName, newHash: latestFullHash.substring(0, 7), oldHash: currentHash });
@@ -54979,7 +54980,7 @@ function isNewerCommit(currentHash, latestHash, latestDateStr, currentDateStr) {
 
 async function run() {
     try {
-        const engineNames = await check_new_engine_release_fs.readdir(packagesEnginesPath);
+        const engineNames = await promises_namespaceObject.readdir(packagesEnginesPath);
         const issuesFound = [];
 
         for (let engine of engineNames) {
