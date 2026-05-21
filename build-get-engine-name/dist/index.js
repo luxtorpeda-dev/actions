@@ -1,11 +1,19 @@
+import { createRequire as __WEBPACK_EXTERNAL_createRequire } from "module";
 /******/ /* webpack/runtime/compat */
 /******/ 
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
 /******/ 
 /************************************************************************/
 var __webpack_exports__ = {};
-const core = require('@actions/core');
-const githubReq = require('@actions/github');
+
+;// CONCATENATED MODULE: external "module"
+const external_module_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("module");
+;// CONCATENATED MODULE: ./build-get-engine-name/index.js
+
+const build_get_engine_name_require = (0,external_module_namespaceObject.createRequire)(import.meta.url);
+
+const core = build_get_engine_name_require('@actions/core');
+const githubReq = build_get_engine_name_require('@actions/github');
 
 async function run() {
     try {
