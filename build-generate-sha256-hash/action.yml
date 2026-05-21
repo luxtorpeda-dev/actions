@@ -1,0 +1,13 @@
+name: 'Generate SHA256 Hash for File'
+description: 'Generate SHA256 Hash for File'
+author: 'd10sfan'
+runs:
+    using: 'node24'
+    main: 'dist/index.js'
+inputs:
+    file:
+        description: File path of hash
+        required: true
+outputs:
+    hash:
+        description: File hash
