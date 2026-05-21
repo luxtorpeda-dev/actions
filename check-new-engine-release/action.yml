@@ -1,0 +1,15 @@
+name: 'Check For New Releases'
+description: 'Checks engines for new releases'
+author: 'd10sfan'
+runs:
+    using: 'node24'
+    main: 'index.js'
+inputs:
+  github_token:
+    description: "GitHub Personal Access Token (PAT) to increase API limits."
+    required: true
+  commit_mode:
+    description: tag or hash, to only check ones that match that
+outputs:
+  matrix:
+    description: Matrix

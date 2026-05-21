@@ -1,0 +1,13 @@
+name: 'Generate File Matrix'
+description: 'Gets matrix based on files created'
+author: 'd10sfan'
+runs:
+    using: 'node24'
+    main: 'dist/index.js'
+inputs:
+  name:
+    description: Name of the folder to search in
+    required: true
+outputs:
+  matrix:
+    description: Matrix
