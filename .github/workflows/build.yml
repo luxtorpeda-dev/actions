@@ -1,7 +1,12 @@
-name: Test Actions
+name: Build Action Dist
 
 on:
-  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
 
 jobs:
   discover-actions:
@@ -32,7 +37,7 @@ jobs:
 
           echo "actions=$actions" >> "$GITHUB_OUTPUT"
 
-  build:
+  build-dist:
     needs: discover-actions
     runs-on: ubuntu-latest
 
@@ -70,6 +75,8 @@ jobs:
             exit 1
           fi
 
+          rm -rf "$action_dir/dist"
+
           echo "Compiling $entry"
           npx ncc build "$entry" -o "$action_dir/dist"
 
@@ -78,4 +85,60 @@ jobs:
             exit 1
           fi
 
-          echo "Successfully compiled $action_dir"
+  commit-dist:
+    needs: build-dist
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Compile All Actions
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          find . \
+            -path "*/node_modules/*" -prune -o \
+            \( -name "action.yml" -o -name "action.yaml" \) \
+            -print |
+          while read -r action_file; do
+            action_dir="$(dirname "$action_file")"
+            entry="$action_dir/index.js"
+
+            if [ ! -f "$entry" ]; then
+              echo "ERROR: Missing entry file: $entry"
+              exit 1
+            fi
+
+            rm -rf "$action_dir/dist"
+            npx ncc build "$entry" -o "$action_dir/dist"
+          done
+
+      - name: Commit dist changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet; then
+            echo "No dist changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add .
+          git commit -m "Build action dist files"
+          git push
