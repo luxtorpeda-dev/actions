@@ -5,7 +5,7 @@ import * as core from '@actions/core';
 import { context } from '@actions/github';
 const fs = require('fs').promises;
 const path = require('path');
-const axios = require('axios');
+import axios from 'axios';
 import { Octokit } from "octokit";
 const { execSync } = require('child_process');
 
