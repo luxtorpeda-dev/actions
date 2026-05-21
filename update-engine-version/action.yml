@@ -1,0 +1,25 @@
+name: 'Update Engine With New Release'
+description: 'Update engine based on inputs'
+author: 'd10sfan'
+runs:
+    using: 'node24'
+    main: 'index.js'
+inputs:
+  engineName:
+    description: Name of engine
+    required: true
+  newTag:
+    description: New tag string
+    required: false
+  oldTag:
+    description: Old tag string
+    required: false
+  newHash:
+    description: New hash string
+    required: false
+  oldHash:
+    description: Old hash string
+    required: false
+outputs:
+  matrix:
+    description: Matrix

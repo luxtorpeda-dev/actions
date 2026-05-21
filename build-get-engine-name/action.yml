@@ -1,0 +1,15 @@
+name: 'Get Engine Name'
+description: 'Gets engine name based on commits folder'
+author: 'd10sfan'
+runs:
+    using: 'node24'
+    main: 'dist/index.js'
+inputs:
+  token:
+    description: GitHub Personal Access Token
+    required: true
+outputs:
+  engines:
+    description: Name of the engines found
+  container:
+    description: Name of the container that should be used

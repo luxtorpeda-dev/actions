@@ -1,0 +1,82 @@
+name: Test Actions
+
+on:
+  pull_request:
+
+jobs:
+  discover-actions:
+    runs-on: ubuntu-latest
+
+    outputs:
+      actions: ${{ steps.discover.outputs.actions }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Discover action folders
+        id: discover
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          actions="$(
+            find . \
+              -path "*/node_modules/*" -prune -o \
+              \( -name "action.yml" -o -name "action.yaml" \) \
+              -print |
+            xargs -r -n1 dirname |
+            sort -u |
+            jq -R -s -c 'split("\n") | map(select(length > 0))'
+          )"
+
+          echo "actions=$actions" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: discover-actions
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        action-dir: ${{ fromJson(needs.discover-actions.outputs.actions) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Compile Action
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          action_dir="${{ matrix.action-dir }}"
+          entry="$action_dir/src/index.js"
+
+          echo "Processing action: $action_dir"
+
+          if [ ! -f "$entry" ]; then
+            echo "ERROR: Missing entry file: $entry"
+            exit 1
+          fi
+
+          rm -rf "$action_dir/dist"
+
+          echo "Compiling $entry"
+          npx ncc build "$entry" -o "$action_dir/dist"
+
+          if [ ! -f "$action_dir/dist/index.js" ]; then
+            echo "ERROR: dist/index.js was not generated"
+            exit 1
+          fi
+
+          echo "Successfully compiled $action_dir"

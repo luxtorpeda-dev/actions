@@ -1,0 +1,23 @@
+{
+  "name": "actions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luxtorpeda-dev/actions.git"
+  },
+  "author": "d10sfan",
+  "bugs": {
+    "url": "https://github.com/luxtorpeda-dev/actions/issues"
+  },
+  "homepage": "https://github.com/luxtorpeda-dev/actions#readme",
+  "dependencies": {
+    "@actions/core": "^3.0.0",
+    "@actions/github": "^9.0.0",
+    "@vercel/ncc": "^0.38.4",
+    "axios": "^1.13.6",
+    "octokit": "^5.0.5"
+  }
+}
