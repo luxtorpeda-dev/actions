@@ -1,7 +1,7 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
-const core = require('@actions/core');
+import * as core from '@actions/core';
 const crypto = require('crypto');
 const fs = require('fs');
 
